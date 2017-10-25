@@ -64,3 +64,23 @@ getPages () {
 	rm "chapter_$chapter"
     return 0
 }
+
+# get the name of all mangas into a file
+# @param file
+# @access private
+getAllMangasInFile(){
+	file="$1"
+	SEPARATOR=' '
+	SEPARATORREPLACE="\n"
+	nbPage=$(wget -q "http://mangasupa.com/manga_list?type=topview&category=all&state=all&page=1" -O - | grep -oP "(?<=LAST\().*?(?=\))")
+	echo $nbPage
+	for (( page=1; page<=$nbPage; page++ )); do
+		echo "Analyse page $page"
+		wget -q -O tmp "http://mangasupa.com/manga_list?type=topview&category=all&state=all&page=$page"
+		str=$(sed -n '/<div class="cotgiua">/,/<div class="cotphai">/ p' tmp | grep -oP "(?<=href=\"http://mangasupa.com/chapter/).*?(?=/chapter_)")
+		str="${str// /$'\n'}"
+		echo "$str" >> $file
+		rm tmp
+	done;
+	cat $file
+}
