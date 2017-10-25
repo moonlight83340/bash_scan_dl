@@ -14,7 +14,7 @@ init(){
 # @param string directory chapter
 # @return bool
 # @access private
-chapiter_exist(){
+chapter_exist(){
 	local directory="$1"
 	if [ ! -d "${directory}" ]; then
         return 1

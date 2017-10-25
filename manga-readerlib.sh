@@ -20,7 +20,7 @@ get () {
 
     # directory of chapter
     directory="${directory}/${name}/${chapter}"
-	chapiter_exist "$directory"
+	chapter_exist "$directory"
 	if [ $? -eq 1 ];then
 		init "$directory"
 		echo "Get chapter ${chapter}..."
@@ -60,7 +60,6 @@ getPageCount () {
 getChapterCount () {
 	local URL=$1
 	local name=$2
-	echo $name
     local ChapterCount=$(wget -q "${URL}" -O - | grep -oP 'href="/'"${name}"'/[0-9]+"' | tail -1  | grep -oP '[0-9]+')
     return $ChapterCount;
 }
