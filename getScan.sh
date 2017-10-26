@@ -53,6 +53,9 @@ getScanBychapter(){
 		echo "Nombre de chapitre disponible : $chapter"
 		echo "Utilisation de $webSiteUse..."
 		get "$1" "$2" "$3"
+		if [ $? -eq 0 ]; then
+			echo "Téléchargement terminé, un chapitre téléchargé"
+		fi
 	else
 		echo "Aucun scan trouvé... Mauvais nom ou bien scan non disponible"
 	fi
@@ -69,9 +72,14 @@ getAllScan(){
 		echo "Manga : $1"
 		echo "Nombre de chapitre disponible : $chapter"
 		echo "Utilisation de $webSiteUse..."
+		local nbChapterDl=0
 		for (( chap=1; chap<=$chapter; chap++ )); do
 			get "$1" $chap "$2"
+			if [ $? -eq 0 ]; then
+				(( nbChapterDl++ ))
+			fi
 		done;
+		echo "Téléchargement terminé, $chapter chapitres téléchargé"
 	else
 		echo "Aucun scan trouvé... Mauvais nom ou bien scan non disponible"
 	fi

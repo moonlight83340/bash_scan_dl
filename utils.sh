@@ -17,8 +17,8 @@ init(){
 chapter_exist(){
 	local directory="$1"
 	if [ ! -d "${directory}" ]; then
-        return 1
+        return 0
     else
-		return 0
+		return 1
 	fi
 }

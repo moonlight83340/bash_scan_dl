@@ -25,14 +25,15 @@ get () {
     # directory of chapter
     directory="${directory}/${name}/${chapter}"
 	chapter_exist "$directory"
-	if [ $? -eq 1 ];then
+	if [ $? -eq 0 ];then
 		init "$directory"
 		echo "Get chapter ${chapter}..."
 		getPages "$URL" "$name" $chapter "$directory"
+		return 0
 	else
 		echo "You already have chapter ${chapter}"
+		return 1
 	fi
-    return $?
 }
 
 # returns count of chapter
@@ -55,14 +56,10 @@ getPages () {
 	local name="$2"
 	local chapter=$3
 	local directory="$4"
-    getPageCount "$URL"
-    local pages=$?
-    echo "Found ${pages} pages."
 	#download all page of the chapter
-	wget "$URL"
-	wget $(cat "chapter_$chapter" | grep '[0-9].jpg' | grep -oP "(?<=src=\").*?(?=\")") --directory-prefix=${directory} -nc
+	wget -q "$URL"
+	wget -q $(cat "chapter_$chapter" | grep '[0-9].jpg' | grep -oP "(?<=src=\").*?(?=\")") --directory-prefix=${directory} -nc
 	rm "chapter_$chapter"
-    return 0
 }
 
 # get the name of all mangas into a file

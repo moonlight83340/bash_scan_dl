@@ -24,14 +24,15 @@ get () {
     directory="${directory}/${name}/${chapter}"
     directory="${directory// /-}"
 	chapter_exist "$directory"
-	if [ $? -eq 1 ];then
+	if [ $? -eq 0 ];then
 		init "$directory"
 		echo "Get chapter ${chapter}..."
 		getPages "$URL" "$name" $chapter "$directory"
+		return $?
 	else
 		echo "You already have chapter ${chapter}"
+		return 1
 	fi
-    return $?
 }
 
 # outputs URL of image of given manga page.
@@ -109,7 +110,7 @@ getPages () {
             echo ":)"
         else
             echo ":( RETRY:"
-            wget ${img_url} --directory-prefix=${directory} -nc
+            wget -q ${img_url} --directory-prefix=${directory} -nc
             if [ ! $? -eq 0 ]; then
                 echo "Could not download page ${img_url}"
                 return 1
