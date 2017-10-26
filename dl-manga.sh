@@ -11,7 +11,9 @@ usage(){
 	$0 <name-of-manga> -nc\n\
 	$0 <name-of-manga> -nbChapter\n\
 	$0 <name-of-manga> -m [target-dir]\n\
-	$0 <name-of-manga> --manga [target-dir]";
+	$0 <name-of-manga> --manga [target-dir]\n\
+	$0 <File> --mangaSupaGetAll\n\
+	$0 <File> -msGetAll";
 	
 	exit 1;
 }
@@ -30,6 +32,9 @@ elif [ "$2" = "--nbChapter" ] || [ "$2" = "-nc" ]; then
 	echo "Il y a $nbChapter chapitres disponible"
 elif [ "$2" = "--manga" ] || [ "$2" = "-m" ]; then
 	getAllScan "$1" "$3"
+elif [ "$2" = "--mangaSupaGetAll" ] || [ "$2" = "-msGetAll" ]; then
+	. mangasupalib.sh
+	getAllMangasInFile "$1"
 else
 	file="$1"
 	cat $file | while  read ligne ; do
