@@ -42,10 +42,10 @@ get () {
 # @return count
 # @access private
 getChapterCount () {
-	local URL=$1
-	local name=$2
-    local ChapterCount=$(wget -q "${URL}manga/${name}" -O - | grep -o 'href="'${URL}chapter/${name}/chapter_[0-9]*'' | head -1 | grep -oP "[0-9]*")
-    return $ChapterCount;
+	local URL="$1"
+	local name="$2"
+    local ChapterCount=$(wget -q "${URL}manga/${name}" -O - | grep -o 'href="'${URL}chapter/${name}/chapter_[0-9]*'' | head -1 | grep -oP "chapter_[0-9]*" | sed s/chapter_//g)
+    return "$ChapterCount";
 }
 
 # downloads all pages

@@ -20,23 +20,23 @@ nbChapter(){
 	. jpscanlib.sh
 	URL="http://www.japscan.com/lecture-en-ligne/${1}/"
 	getChapterCount "$URL" "$1"
-	local chapter=$?
+	local chapter="$?"
 	if [ $chapter -eq 0 ];then
 		#if jpscan have no result we try on manga-reader
 		. manga-readerlib.sh
 		URL="http://www.mangareader.net/${1}"
 		getChapterCount $URL $1
-		chapter=$?
+		chapter="$?"
 		webSiteUse=$MANGAREADER
 	fi
 	if [ $chapter -eq 0 ];then
 		#if mangareader have no result we try on mangaSupa
 		. mangasupalib.sh
 		getChapterCount "$BASE_URL" "$1"
-		chapter=$?
+		chapter="$?"
 		webSiteUse=$MANGASUPA
 	fi	
-	return $chapter
+	return "$chapter"
 }
 
 # gets the manga

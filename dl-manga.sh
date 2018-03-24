@@ -12,6 +12,8 @@ usage(){
 	$0 <name-of-manga> -nbChapter\n\
 	$0 <name-of-manga> -m [target-dir]\n\
 	$0 <name-of-manga> --manga [target-dir]\n\
+	$0 <File> --mangaLessChapterThan\n\
+	$0 <File> -mlct\n\
 	$0 <File> --mangaSupaGetAll\n\
 	$0 <File> -msGetAll";
 	
@@ -35,6 +37,16 @@ elif [ "$2" = "--manga" ] || [ "$2" = "-m" ]; then
 elif [ "$2" = "--mangaSupaGetAll" ] || [ "$2" = "-msGetAll" ]; then
 	. mangasupalib.sh
 	getAllMangasInFile "$1"
+elif [ "$2" = "--mangaLessChapterThan" ] || [ "$2" = "-mlct" ]; then
+	file="$1"
+	cat $file | while  read ligne ; do
+		nbChapter "$ligne"
+		nbChapters="$?"
+		if [ "$nbChapters" -lt "$3" ];then
+			echo "$ligne chapter = $nbChapters"	
+			echo "$ligne" >> "perfectManga"	
+		fi
+	done
 else
 	file="$1"
 	cat $file | while  read ligne ; do
